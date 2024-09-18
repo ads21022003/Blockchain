@@ -15,6 +15,7 @@ class Transaction :
             self.id  = id
             self.signature = 0
     def __str__(self)->str :
+         #truncating to make it presentable and starting few digits are same coz of encoding format"
          return f'{self.id} {self.payee.export_key(format="DER").hex()[50:100]}  {self.payer.export_key(format="DER").hex()[50:100]} {self.amount} '
     def serialize(self):
          return f'{self.id} {self.payee.export_key(format="DER").hex()}  {self.payer.export_key(format="DER").hex()} {self.amount} '
@@ -32,7 +33,8 @@ class Block:
         self.hash=-1
 
     def __str__(self) -> str:
-        a=  f'{self.index} {str(self.prevHash)[:10] } {self.nonce} {datetime.fromtimestamp(self.time).strftime("%Y-%m-%d %H:%M:%S")}  \n'
+        #truncating hash 
+        a=  f'{self.index} {self.prevHash[:10] } {self.nonce} {datetime.fromtimestamp(self.time).strftime("%Y-%m-%d %H:%M:%S")}  \n'
         for i in self.transactions:
             a+=str(i)+"\n"
         return a      
@@ -48,7 +50,7 @@ class Blockchain:
     def __init__(self):
           self.blockchain=[]
           #genisis block
-          self.blockchain.append(Block(0,0,[]))
+          self.blockchain.append(Block(0,"0",[]))
           self.blockchain[0].hash = self.blockchain[0].get_hash().hexdigest()
     def get_lastBlock (self)->Block:
          return self.blockchain[-1]
